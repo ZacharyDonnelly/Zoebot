@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import React, { useState } from "react";
 import {
@@ -11,7 +12,8 @@ import {
   View,
 } from "react-native";
 
-export default function Login() {
+const Login = () => {
+  const navigation = useNavigation<any>();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,18 +30,21 @@ export default function Login() {
     setLoading(true);
 
     try {
-      console.log(username, password);
       const response = await axios.post("http://127.0.0.1:8000/token", {
         username,
         password,
       });
 
       const { access_token } = response.data;
-      console.log(response, access_token);
-      // Save token in AsyncStorage
+
       await AsyncStorage.setItem("access_token", access_token);
+      console.log(
+        "Sucessfully logged in",
+        await AsyncStorage.getItem("access_token"),
+      );
 
       Alert.alert("Login Successful", "You are now logged in!");
+      navigation.navigate("chat");
     } catch (error) {
       console.error("Login error:", error);
       if (axios.isAxiosError(error)) {
@@ -76,11 +81,14 @@ export default function Login() {
       {loading ? (
         <ActivityIndicator size="large" color="#007BFF" />
       ) : (
-        <Button title="Login" onPress={handleLogin} />
+        <View>
+          <Button title="Login" onPress={handleLogin} />
+          <Button title="Home" onPress={() => navigation.navigate("home")} />
+        </View>
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -104,3 +112,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 });
+
+export default Login;

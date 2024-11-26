@@ -1,3 +1,5 @@
+import { createSession, getChatHistory, Message } from "@/api/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
@@ -7,20 +9,22 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { createSession, getChatHistory, Message } from "../../api/api";
-import { useAuth } from "../../context/AuthContext";
 
-const Chat: React.FC = () => {
-  const { token } = useAuth();
+const Chat = () => {
+  const [token, setToken] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   const socket = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     const initChat = async () => {
-      if (!token) return;
-      const sessionId = await createSession(token);
-      const history = await getChatHistory(token, sessionId);
+      const accessToken = await AsyncStorage.getItem("access_token");
+      setToken(accessToken);
+
+      if (!accessToken) return;
+
+      const sessionId = await createSession(accessToken);
+      const history = await getChatHistory(accessToken, sessionId);
       setMessages(history);
 
       socket.current = new WebSocket(
@@ -35,6 +39,7 @@ const Chat: React.FC = () => {
     };
 
     initChat();
+
     return () => {
       if (socket.current) {
         socket.current.close();
