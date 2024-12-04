@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Animated, Dimensions, Modal, StyleSheet, View } from "react-native";
+import { Animated, Dimensions, Modal, View } from "react-native";
 
 interface BottomModalProps {
   visible: boolean;
@@ -29,33 +29,13 @@ const BottomModal: React.FC<BottomModalProps> = ({ visible, children }) => {
   return (
     <Modal transparent visible={visible} animationType="none">
       <Animated.View
-        style={[styles.container, { transform: [{ translateY }] }]}
+        className="absolute bottom-0 left-0 right-0 h-[408px] bg-white rounded-t-[32px] overflow-hidden shadow-5"
+        style={{ transform: [{ translateY }] }}
       >
-        <View style={styles.content}>{children}</View>
+        <View className="flex-1 pt-[38px] pb-7 px-9">{children}</View>
       </Animated.View>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 408,
-    backgroundColor: "#fff",
-    borderTopRightRadius: 32,
-    borderTopLeftRadius: 32,
-    overflow: "hidden",
-    elevation: 5,
-  },
-  content: {
-    paddingTop: 38,
-    paddingBottom: 28,
-    paddingHorizontal: 36,
-    flex: 1,
-  },
-});
 
 export default BottomModal;
