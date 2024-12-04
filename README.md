@@ -1,2 +1,2 @@
-# Zoe
-Personal AI assistant
+# Zoebot
+Personal AI assistant/companion
