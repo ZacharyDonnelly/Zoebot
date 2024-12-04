@@ -2,6 +2,7 @@ import BottomModal from "@/components/BottomModal";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
+  Dimensions,
   ImageBackground,
   StyleSheet,
   Text,
@@ -11,6 +12,7 @@ import {
 import Swiper from "react-native-swiper";
 
 const Welcome = () => {
+  const { width } = Dimensions.get("window");
   const swiperRef = useRef<Swiper>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -22,41 +24,56 @@ const Welcome = () => {
         resizeMode="cover"
       >
         <BottomModal visible>
-          <Swiper
-            ref={swiperRef}
-            loop={false}
-            dot={<View style={styles.inactiveDot} />}
-            activeDot={<View style={styles.activeDot} />}
-            onIndexChanged={(index) => setActiveIndex(index)}
-          >
-            <View style={styles.wrapper}>
-              <Text style={styles.header}>Your Personal AI Assistant</Text>
-              <Text style={styles.subHeader}>
-                Whether you're seeking information, guidance, or just a friendly
-                chat, Zoebot is here to lend you a hand.
-              </Text>
-            </View>
-            <View style={styles.wrapper}>
-              <Text style={styles.header}>Simple, Smart, Seamless</Text>
-              <Text style={styles.subHeader}>
-                Zoebot is equipped with the knowledge and skills to assist you
-                in various aspects of your life.
-              </Text>
-            </View>
-            <View style={styles.wrapper}>
-              <Text style={styles.header}>Tailored Just For You</Text>
-              <Text style={styles.subHeader}>
-                Zoebot adapts to your needs and makes it uniquely yours for a
-                truly personalized experience.
-              </Text>
-            </View>
-          </Swiper>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => router.replace("/(auth)/sign-up")}
-          >
-            <Text style={styles.closeButtonText}>Close</Text>
-          </TouchableOpacity>
+          <View style={styles.modalContent}>
+            <Swiper
+              width={width}
+              ref={swiperRef}
+              loop={false}
+              dot={<View style={styles.inactiveDot} />}
+              activeDot={<View style={styles.activeDot} />}
+              onIndexChanged={(index) => setActiveIndex(index)}
+            >
+              <View style={styles.slide}>
+                <Text style={styles.header}>Your Personal AI Assistant</Text>
+                <Text style={styles.subHeader}>
+                  Whether you're seeking information, guidance, or just a
+                  friendly chat, Zoebot is here to lend you a hand.
+                </Text>
+              </View>
+              <View style={styles.slide}>
+                <Text style={styles.header}>Simple, Smart, Seamless</Text>
+                <Text style={styles.subHeader}>
+                  Zoebot is equipped with the knowledge and skills to assist you
+                  in various aspects of your life.
+                </Text>
+              </View>
+              <View style={styles.slide}>
+                <Text style={styles.thirdSliderHeader}>Tailored Just</Text>
+                <Text style={styles.thirdSliderHeader}>For You</Text>
+                <Text style={styles.subHeader}>
+                  Zoebot adapts to your needs and makes it uniquely yours for a
+                  truly personalized experience.
+                </Text>
+              </View>
+            </Swiper>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => {
+                setActiveIndex(activeIndex + 1);
+                swiperRef.current?.scrollBy(1);
+              }}
+            >
+              <Text style={styles.closeButtonText}>Next</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.signInButton}
+              onPress={() => router.replace("/(auth)/sign-in")}
+            >
+              <Text style={styles.signInButtonText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
         </BottomModal>
       </ImageBackground>
     </View>
@@ -66,27 +83,38 @@ const Welcome = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
   },
-  wrapper: {
+  slide: {
     flex: 1,
     alignItems: "center",
-    margin: 0,
-    padding: 0,
+    paddingVertical: 0,
+    paddingHorizontal: 20,
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    alignItems: "center",
   },
   header: {
     fontSize: 30,
     lineHeight: 38,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 12,
+    maxWidth: 300,
+  },
+  thirdSliderHeader: {
+    fontSize: 30,
+    lineHeight: 38,
+    fontWeight: "bold",
+    textAlign: "center",
+    maxWidth: 300,
   },
   subHeader: {
     fontSize: 16,
     lineHeight: 24,
     textAlign: "center",
-    marginBottom: 20,
+    maxWidth: 300,
+    marginTop: 12,
   },
   image: {
     flex: 1,
@@ -124,8 +152,16 @@ const styles = StyleSheet.create({
     width: 12,
     marginHorizontal: 6,
   },
-  hidden: {
-    display: "none",
+  signInButton: {
+    marginTop: 12,
+    alignSelf: "center",
+    backgroundColor: "transparent",
+  },
+  signInButtonText: {
+    fontSize: 16,
+    fontWeight: 500,
+    lineHeight: 24,
+    color: "#6938EF",
   },
 });
 

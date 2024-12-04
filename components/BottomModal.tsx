@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 404,
+    height: 408,
     backgroundColor: "#fff",
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingTop: 38,
-    paddingBottom: 36,
+    paddingBottom: 28,
     paddingHorizontal: 36,
     flex: 1,
   },
