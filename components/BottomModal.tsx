@@ -43,23 +43,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: "40%",
+    height: 404,
     backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
     overflow: "hidden",
     elevation: 5,
   },
   content: {
-    padding: 20,
+    paddingTop: 38,
+    paddingBottom: 36,
+    paddingHorizontal: 36,
     flex: 1,
-    justifyContent: "space-between",
-  },
-
-  modalText: {
-    fontSize: 18,
-    textAlign: "center",
-    marginVertical: 10,
   },
 });
 
