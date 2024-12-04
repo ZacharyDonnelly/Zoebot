@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import {
   Dimensions,
   ImageBackground,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -17,40 +16,53 @@ const Welcome = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       <ImageBackground
         source={require("../../assets/images/robot_splash.png")}
-        style={styles.image}
+        className="flex-1 w-full h-[475px] justify-center items-center"
         resizeMode="cover"
       >
         <BottomModal visible>
-          <View style={styles.modalContent}>
+          <View
+            className="flex-1 items-center 
+          bg-[rgba(255, 255, 255, 0.9)]"
+          >
             <Swiper
               width={width}
               ref={swiperRef}
               loop={false}
-              dot={<View style={styles.inactiveDot} />}
-              activeDot={<View style={styles.activeDot} />}
+              dot={
+                <View className="rounded-xl bg-[#EAECF0] h-3 w-3 mx-[6px]" />
+              }
+              activeDot={<View className="w-8 h-3 rounded-xl bg-[#7A5AF8]" />}
               onIndexChanged={(index) => setActiveIndex(index)}
             >
-              <View style={styles.slide}>
-                <Text style={styles.header}>Your Personal AI Assistant</Text>
-                <Text style={styles.subHeader}>
+              <View className="flex-1 items-center py-0 px-5">
+                <Text className="text-3xl font-bold text-center max-w-[300px]">
+                  Your Personal AI Assistant
+                </Text>
+                <Text className="text-base text-center max-w-[300px] mt-3">
                   Whether you're seeking information, guidance, or just a
                   friendly chat, Zoebot is here to lend you a hand.
                 </Text>
               </View>
-              <View style={styles.slide}>
-                <Text style={styles.header}>Simple, Smart, Seamless</Text>
-                <Text style={styles.subHeader}>
+              <View className="flex-1 items-center py-0 px-5">
+                <Text className="text-3xl font-bold text-center max-w-[300px]">
+                  Simple, Smart, Seamless
+                </Text>
+                <Text className="text-base text-center max-w-[300px] mt-3">
                   Zoebot is equipped with the knowledge and skills to assist you
                   in various aspects of your life.
                 </Text>
               </View>
-              <View style={styles.slide}>
-                <Text style={styles.thirdSliderHeader}>Tailored Just</Text>
-                <Text style={styles.thirdSliderHeader}>For You</Text>
-                <Text style={styles.subHeader}>
+              <View className="flex-1 items-center py-0 px-5">
+                <Text className="text-3xl font-bold items-center max-w-[300px]">
+                  Tailored Just
+                </Text>
+                <Text className="text-3xl font-bold items-center max-w-[300px]">
+                  For You
+                </Text>
+                <Text className="text-base text-center max-w-[300px] mt-3">
                   Zoebot adapts to your needs and makes it uniquely yours for a
                   truly personalized experience.
                 </Text>
@@ -59,19 +71,21 @@ const Welcome = () => {
           </View>
           <View>
             <TouchableOpacity
-              style={styles.closeButton}
+              className="w-[303px] h-14 justify-center items-center bg-[#6938EF] rounded-xl mt-4"
               onPress={() => {
                 setActiveIndex(activeIndex + 1);
                 swiperRef.current?.scrollBy(1);
               }}
             >
-              <Text style={styles.closeButtonText}>Next</Text>
+              <Text className="text-white text-base">Next</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.signInButton}
+              className="mt-3 self-center bg-transparent"
               onPress={() => router.replace("/(auth)/sign-in")}
             >
-              <Text style={styles.signInButtonText}>Sign In</Text>
+              <Text className="text-base font-medium text-[#6938EF]">
+                Sign In
+              </Text>
             </TouchableOpacity>
           </View>
         </BottomModal>
@@ -79,90 +93,5 @@ const Welcome = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  slide: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 0,
-    paddingHorizontal: 20,
-  },
-  modalContent: {
-    flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    alignItems: "center",
-  },
-  header: {
-    fontSize: 30,
-    lineHeight: 38,
-    fontWeight: "bold",
-    textAlign: "center",
-    maxWidth: 300,
-  },
-  thirdSliderHeader: {
-    fontSize: 30,
-    lineHeight: 38,
-    fontWeight: "bold",
-    textAlign: "center",
-    maxWidth: 300,
-  },
-  subHeader: {
-    fontSize: 16,
-    lineHeight: 24,
-    textAlign: "center",
-    maxWidth: 300,
-    marginTop: 12,
-  },
-  image: {
-    flex: 1,
-    width: "100%",
-    height: 475,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  closeButton: {
-    alignSelf: "center",
-    width: 303,
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#6938EF",
-    borderRadius: 12,
-    marginTop: 20,
-  },
-  closeButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  activeDot: {
-    width: 32,
-    height: 12,
-    borderRadius: 12,
-    backgroundColor: "#7A5AF8",
-  },
-  inactiveDot: {
-    borderRadius: 12,
-    backgroundColor: "#EAECF0",
-    height: 12,
-    width: 12,
-    marginHorizontal: 6,
-  },
-  signInButton: {
-    marginTop: 12,
-    alignSelf: "center",
-    backgroundColor: "transparent",
-  },
-  signInButtonText: {
-    fontSize: 16,
-    fontWeight: 500,
-    lineHeight: 24,
-    color: "#6938EF",
-  },
-});
 
 export default Welcome;
