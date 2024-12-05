@@ -8,6 +8,7 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import "./global.css";
 
 const tokenCache: TokenCache = {
   async getToken(key: string) {
@@ -42,9 +43,7 @@ if (!publishableKey) {
   );
 }
 
-// const Stack = createNativeStackNavigator();
-
-const App = () => {
+const RootLayout = () => {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -63,9 +62,9 @@ const App = () => {
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
         <Stack>
-          {/* <Stack.Screen name="(root)" options={{ headerShown: false }} /> */}
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="chat" options={{ headerShown: false }} />
+          <Stack.Screen name="(root)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
       </ClerkLoaded>
@@ -73,4 +72,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default RootLayout;

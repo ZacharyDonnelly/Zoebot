@@ -1,28 +1,35 @@
-import BottomModal from "@/components/BottomModal";
+import WelcomeModal from "@/components/modal/WelcomeModal";
 import { router } from "expo-router";
-import { useRef, useState } from "react";
-import {
-  Dimensions,
-  ImageBackground,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useMemo, useRef, useState } from "react";
+import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-swiper";
 
 const Welcome = () => {
-  const { width } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
   const swiperRef = useRef<Swiper>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const imageMap: { [key: number]: any } = {
+    0: require("../../assets/images/welcome/welcomeScreen-one.png"),
+    1: require("../../assets/images/welcome/welcomeScreen-two.png"),
+    2: require("../../assets/images/welcome/welcomeScreen-three.png"),
+  };
+
+  const imageSource = useMemo(() => imageMap[activeIndex], [activeIndex]);
+
+  const getSubHeaderFontSize = (): string =>
+    height > 855 ? "text-xl" : "text-base";
 
   return (
     <View className="flex-1">
-      <ImageBackground
-        source={require("../../assets/images/robot_splash.png")}
-        className="flex-1 w-full h-[475px] justify-center items-center"
-        resizeMode="cover"
-      >
-        <BottomModal visible>
+      <View className="flex-1">
+        <Image
+          alt="Zoebot welcome screen image"
+          source={imageSource}
+          style={{ width: width, height: "55%" }}
+          resizeMode="cover"
+        />
+        <WelcomeModal visible>
           <View
             className="flex-1 items-center 
           bg-[rgba(255, 255, 255, 0.9)]"
@@ -38,58 +45,71 @@ const Welcome = () => {
               onIndexChanged={(index) => setActiveIndex(index)}
             >
               <View className="flex-1 items-center py-0 px-5">
-                <Text className="text-3xl font-bold text-center max-w-[300px]">
+                <Text className="text-4xl font-bold text-center max-w-[300px] mb-1 text-[#101828]">
                   Your Personal AI Assistant
                 </Text>
-                <Text className="text-base text-center max-w-[300px] mt-3">
+                <Text
+                  className={`${getSubHeaderFontSize()} max-w-[280px] text-center mt-3 text-[#101828]`}
+                >
                   Whether you're seeking information, guidance, or just a
                   friendly chat, Zoebot is here to lend you a hand.
                 </Text>
               </View>
               <View className="flex-1 items-center py-0 px-5">
-                <Text className="text-3xl font-bold text-center max-w-[300px]">
+                <Text className="text-4xl font-bold text-center max-w-[280px] mb-1 text-[#101828]">
                   Simple, Smart, Seamless
                 </Text>
-                <Text className="text-base text-center max-w-[300px] mt-3">
+                <Text
+                  className={`${getSubHeaderFontSize()} text-center max-w-[254px] mt-3 text-[#101828]`}
+                >
                   Zoebot is equipped with the knowledge and skills to assist you
                   in various aspects of your life.
                 </Text>
               </View>
               <View className="flex-1 items-center py-0 px-5">
-                <Text className="text-3xl font-bold items-center max-w-[300px]">
+                <Text className="text-4xl font-bold items-center max-w-[300px] mb-1 text-[#101828]">
                   Tailored Just
                 </Text>
-                <Text className="text-3xl font-bold items-center max-w-[300px]">
+                <Text className="text-4xl font-bold items-center max-w-[300px]">
                   For You
                 </Text>
-                <Text className="text-base text-center max-w-[300px] mt-3">
+                <Text
+                  className={`${getSubHeaderFontSize()} text-center max-w-[250px] mt-3 text-[#101828]`}
+                >
                   Zoebot adapts to your needs and makes it uniquely yours for a
                   truly personalized experience.
                 </Text>
               </View>
             </Swiper>
           </View>
-          <View>
-            <TouchableOpacity
-              className="w-[303px] h-14 justify-center items-center bg-[#6938EF] rounded-xl mt-4"
-              onPress={() => {
-                setActiveIndex(activeIndex + 1);
-                swiperRef.current?.scrollBy(1);
-              }}
-            >
-              <Text className="text-white text-base">Next</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="mt-3 self-center bg-transparent"
-              onPress={() => router.replace("/(auth)/sign-in")}
-            >
-              <Text className="text-base font-medium text-[#6938EF]">
-                Sign In
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </BottomModal>
-      </ImageBackground>
+          <TouchableOpacity
+            className="w-[303px] h-14 justify-center items-center self-center bg-[#6938EF] rounded-xl mt-7"
+            onPress={() => {
+              if (activeIndex >= 2) {
+                router.replace("/(auth)/sign-up");
+                return;
+              }
+              setActiveIndex(activeIndex + 1);
+
+              Image.prefetch(imageMap[activeIndex]);
+
+              swiperRef.current?.scrollBy(1);
+            }}
+          >
+            <Text className="text-white text-lg font-bold">
+              {activeIndex >= 2 ? "Let's begin" : "Next"}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="mt-3 self-center bg-transparent"
+            onPress={() => router.replace("/(auth)/sign-in")}
+          >
+            <Text className="text-base font-semibold text-[#6938EF]">
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </WelcomeModal>
+      </View>
     </View>
   );
 };

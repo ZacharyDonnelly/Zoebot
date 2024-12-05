@@ -1,12 +1,8 @@
+import { IModalProps } from "@/types/modal";
 import React, { useState } from "react";
 import { Animated, Dimensions, Modal, View } from "react-native";
 
-interface BottomModalProps {
-  visible: boolean;
-  children: React.ReactNode;
-}
-
-const BottomModal: React.FC<BottomModalProps> = ({ visible, children }) => {
+const WelcomeModal: React.FC<IModalProps> = ({ visible, children }) => {
   const screenHeight = Dimensions.get("screen").height;
   const [translateY] = useState(new Animated.Value(screenHeight));
 
@@ -26,16 +22,18 @@ const BottomModal: React.FC<BottomModalProps> = ({ visible, children }) => {
 
   if (!visible) return null;
 
+  const heightCalculated = screenHeight * 0.5 - 19;
+
   return (
     <Modal transparent visible={visible} animationType="none">
       <Animated.View
-        className="absolute bottom-0 left-0 right-0 h-[408px] bg-white rounded-t-[32px] overflow-hidden shadow-5"
-        style={{ transform: [{ translateY }] }}
+        className="absolute bottom-0 left-0 right-0 h-1/2 bg-white rounded-t-[32px] overflow-hidden shadow-5"
+        style={{ transform: [{ translateY }], maxHeight: heightCalculated }}
       >
-        <View className="flex-1 pt-[38px] pb-7 px-9">{children}</View>
+        <View className="flex-1 p-10 pb-10 px-9">{children}</View>
       </Animated.View>
     </Modal>
   );
 };
 
-export default BottomModal;
+export default WelcomeModal;
