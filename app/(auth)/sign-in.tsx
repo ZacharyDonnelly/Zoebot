@@ -1,42 +1,39 @@
-import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
-import React from "react";
-import { Button, Text, TextInput, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSignIn } from '@clerk/clerk-expo'
+import { Link, useRouter } from 'expo-router'
+import React from 'react'
+import { Button, Text, TextInput, View } from 'react-native'
 
 const SignInScreen = () => {
-  const { signIn, setActive, isLoaded } = useSignIn();
-  const router = useRouter();
+  const { signIn, setActive, isLoaded } = useSignIn()
+  const router = useRouter()
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [emailAddress, setEmailAddress] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
   const onSignInPress = React.useCallback(async () => {
     if (!isLoaded) {
-      return;
+      return
     }
 
     try {
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
         password,
-      });
+      })
 
-      if (signInAttempt.status === "complete") {
-        await setActive({ session: signInAttempt.createdSessionId });
-        router.replace("/");
+      if (signInAttempt.status === 'complete') {
+        await setActive({ session: signInAttempt.createdSessionId })
+        router.replace('/')
       } else {
-        // See https://clerk.com/docs/custom-flows/error-handling
-        // for more info on error handling
-        console.error(JSON.stringify(signInAttempt, null, 2));
+        console.error(JSON.stringify(signInAttempt, null, 2))
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      console.error(JSON.stringify(err, null, 2))
     }
-  }, [isLoaded, emailAddress, password]);
+  }, [isLoaded, emailAddress, password])
 
   return (
-    <SafeAreaView>
+    <View>
       <TextInput
         autoCapitalize="none"
         value={emailAddress}
@@ -56,8 +53,8 @@ const SignInScreen = () => {
           <Text>Sign up</Text>
         </Link>
       </View>
-    </SafeAreaView>
-  );
-};
+    </View>
+  )
+}
 
-export default SignInScreen;
+export default SignInScreen

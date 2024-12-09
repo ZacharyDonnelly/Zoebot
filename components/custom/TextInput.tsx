@@ -18,7 +18,7 @@ const CustomTextInput = ({ labelText, ...props }: CustomTextInputProps) => {
   const [checkCircleVisible, setCheckCircleVisible] = useState<boolean>(false);
   const [alertCircleVisible, setAlertCircleVisible] = useState<boolean>(false);
 
-  const handleBlur = () => {
+  const handleBlur = (): void => {
     if (props.value && props.value.trim() !== "") {
       setBorderColor("#16B364");
       setCheckCircleVisible(true);
