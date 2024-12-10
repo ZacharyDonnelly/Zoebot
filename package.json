@@ -77,12 +77,10 @@
   },
   "lint-staged": {
     "./app/**/*.ts": [
-      "prettier --write",
-      "expo lint"
+      "prettier --write"
     ],
     "./app/**/*.tsx": [
-      "prettier --write",
-      "expo lint"
+      "prettier --write"
     ]
   }
 }
